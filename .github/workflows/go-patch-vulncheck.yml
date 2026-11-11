@@ -1,0 +1,29 @@
+name: Go patch vulnerability check
+
+on:
+  push:
+    branches: [ci/go-1.27.4-vulncheck]
+
+permissions:
+  contents: read
+
+jobs:
+  vulncheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out version-bump commit
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+          ref: ce167e467b5ad3fd8bd87a0bec3699f967e0bed2
+
+      - name: Set up Go
+        uses: actions/setup-go@v7.0.0
+        with:
+          go-version-file: go.mod
+
+      - name: Scan for vulnerabilities
+        run: |
+          go version
+          go run golang.org/x/vuln/cmd/govulncheck@latest ./...
