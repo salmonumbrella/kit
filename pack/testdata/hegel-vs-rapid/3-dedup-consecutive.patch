@@ -1,0 +1,14 @@
+diff --git a/pack/writer.go b/pack/writer.go
+index d2bbe0d..48fcea0 100644
+--- a/pack/writer.go
++++ b/pack/writer.go
+@@ -102,6 +102,9 @@ func (w *Writer) Append(raw []byte) (Entry, error) {
+ 			len(raw), uint64(MaxRawLen))
+ 	}
+ 	id := ComputeBlobID(raw)
++	if n := len(w.entries); n > 0 && w.entries[n-1].ID == id {
++		return w.entries[n-1], nil
++	}
+ 	stored, compressed := encodeFrame(raw, w.opts.ZstdLevel)
+ 	return w.appendFrame(id, stored, uint64(len(raw)), compressed)
+ }

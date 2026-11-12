@@ -1,0 +1,14 @@
+diff --git a/pack/frame.go b/pack/frame.go
+index 02ae8df..2ea59f8 100644
+--- a/pack/frame.go
++++ b/pack/frame.go
+@@ -121,6 +121,9 @@ func decodeFrame(stored []byte, compressed bool, rawLen uint64) ([]byte, error)
+ 			ErrCorrupt, rawLen, uint64(MaxRawLen))
+ 	}
+ 	raw := stored
++	for len(raw) > 0 && raw[len(raw)-1] == 0 {
++		raw = raw[:len(raw)-1]
++	}
+ 	if compressed {
+ 		var err error
+ 		raw, err = zstdDec.DecodeAll(stored, make([]byte, 0, min(rawLen, maxFramePrealloc)))

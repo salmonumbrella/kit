@@ -3,3 +3,6 @@
 /.roborev/
 /custom-gcl
 /gotestsum/
+
+# Hegel failure database
+.hegel/

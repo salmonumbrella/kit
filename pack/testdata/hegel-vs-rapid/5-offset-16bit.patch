@@ -1,0 +1,13 @@
+diff --git a/pack/footer.go b/pack/footer.go
+index 140a37c..fa9cdbf 100644
+--- a/pack/footer.go
++++ b/pack/footer.go
+@@ -47,7 +47,7 @@ func encodeFooterRegion(entries []Entry) []byte {
+ 	buf = binary.LittleEndian.AppendUint32(buf, uint32(len(entries)))
+ 	for _, e := range entries {
+ 		buf = append(buf, e.ID[:]...)
+-		buf = binary.LittleEndian.AppendUint64(buf, e.Offset)
++		buf = binary.LittleEndian.AppendUint64(buf, e.Offset&0xffff)
+ 		buf = binary.LittleEndian.AppendUint64(buf, e.StoredLen)
+ 		buf = binary.LittleEndian.AppendUint64(buf, e.RawLen)
+ 		buf = append(buf, byte(e.Flags))

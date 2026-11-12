@@ -1,0 +1,16 @@
+diff --git a/pack/property_test.go b/pack/property_test.go
+index 3c48fc4..ab81e32 100644
+--- a/pack/property_test.go
++++ b/pack/property_test.go
+@@ -17,9 +17,9 @@ func TestPackRoundTripProperty(t *testing.T) {
+ 
+ 	// Rapid configures the case count globally; restore it after this test.
+ 	previousChecks := flag.Lookup("rapid.checks").Value.String()
+-	checks := "40"
++	checks := "100"
+ 	if testing.Short() {
+-		checks = "200" // Rapid divides the case count by five in short mode.
++		checks = "500" // Rapid divides the case count by five in short mode.
+ 	}
+ 	require.NoError(t, flag.Set("rapid.checks", checks))
+ 	t.Cleanup(func() { require.NoError(t, flag.Set("rapid.checks", previousChecks)) })

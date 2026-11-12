@@ -1,0 +1,21 @@
+diff --git a/pack/writer.go b/pack/writer.go
+index d2bbe0d..0de4a67 100644
+--- a/pack/writer.go
++++ b/pack/writer.go
+@@ -252,6 +252,7 @@ func (w *Writer) AppendPrepared(
+ // appendFrame seals (when encrypted), writes, and records one encoded frame.
+ func (w *Writer) appendFrame(id BlobID, stored []byte, rawLen uint64, compressed bool) (Entry, error) {
+ 	var flags BlobFlags
++	crc := crc32.Checksum(stored, crc32cTable)
+ 	if compressed {
+ 		flags |= BlobCompressed
+ 	}
+@@ -273,7 +274,7 @@ func (w *Writer) appendFrame(id BlobID, stored []byte, rawLen uint64, compressed
+ 		StoredLen: uint64(len(stored)),
+ 		RawLen:    rawLen,
+ 		Flags:     flags,
+-		CRC32C:    crc32.Checksum(stored, crc32cTable),
++		CRC32C:    crc,
+ 	}
+ 	w.off += int64(len(stored))
+ 	w.entries = append(w.entries, e)

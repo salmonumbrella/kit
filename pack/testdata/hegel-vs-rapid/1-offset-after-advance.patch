@@ -1,0 +1,20 @@
+diff --git a/pack/writer.go b/pack/writer.go
+index d2bbe0d..8e69e61 100644
+--- a/pack/writer.go
++++ b/pack/writer.go
+@@ -267,6 +267,7 @@ func (w *Writer) appendFrame(id BlobID, stored []byte, rawLen uint64, compressed
+ 		w.err = fmt.Errorf("pack: writing blob %s: %w", id, err)
+ 		return Entry{}, w.err
+ 	}
++	w.off += int64(len(stored))
+ 	e := Entry{
+ 		ID:        id,
+ 		Offset:    uint64(w.off),
+@@ -275,7 +276,6 @@ func (w *Writer) appendFrame(id BlobID, stored []byte, rawLen uint64, compressed
+ 		Flags:     flags,
+ 		CRC32C:    crc32.Checksum(stored, crc32cTable),
+ 	}
+-	w.off += int64(len(stored))
+ 	w.entries = append(w.entries, e)
+ 	return e, nil
+ }

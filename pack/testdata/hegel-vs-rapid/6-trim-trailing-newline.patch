@@ -1,0 +1,22 @@
+diff --git a/pack/frame.go b/pack/frame.go
+index 02ae8df..dbfec6a 100644
+--- a/pack/frame.go
++++ b/pack/frame.go
+@@ -1,6 +1,7 @@
+ package pack
+ 
+ import (
++	"bytes"
+ 	"fmt"
+ 	"strconv"
+ 	"sync"
+@@ -121,6 +122,9 @@ func decodeFrame(stored []byte, compressed bool, rawLen uint64) ([]byte, error)
+ 			ErrCorrupt, rawLen, uint64(MaxRawLen))
+ 	}
+ 	raw := stored
++	if !compressed {
++		raw = bytes.TrimSuffix(raw, []byte("\n"))
++	}
+ 	if compressed {
+ 		var err error
+ 		raw, err = zstdDec.DecodeAll(stored, make([]byte, 0, min(rawLen, maxFramePrealloc)))
